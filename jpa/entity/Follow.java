@@ -44,4 +44,8 @@ public class Follow {
 
     private String status;
 
+    // 是否互相关注
+    @Transient
+    private Boolean eachOther;
+
 }

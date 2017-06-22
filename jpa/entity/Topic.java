@@ -2,7 +2,7 @@ package cn.springlogic.social.jpa.entity;
 
 import cn.springlogic.user.jpa.entity.User;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fitcooker.app.AppDataPreFixSerializer;
+import com.fitcooker.app.serializer.AppDataPreFixSerializer;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -44,6 +44,7 @@ public class Topic {
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
+
 
 
     @OneToMany(

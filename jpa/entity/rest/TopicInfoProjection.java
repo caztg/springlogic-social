@@ -3,7 +3,7 @@ package cn.springlogic.social.jpa.entity.rest;
 import cn.springlogic.blog.jpa.entity.rest.UserProjection;
 import cn.springlogic.social.jpa.entity.Topic;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fitcooker.app.AppDataPreFixSerializer;
+import com.fitcooker.app.serializer.AppDataPreFixSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
@@ -21,7 +21,7 @@ public interface TopicInfoProjection {
 
     //@Value("#{target.tags.size()}")
     //int getNum();
-
+    @Value("#{target.tags.size()}")
     int getPublicationNums();
 
     int getFavorNums();

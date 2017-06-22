@@ -51,5 +51,10 @@ public interface PublicationFavorRepository extends JpaRepository<PublicationFav
     @RestResource(path = "favors",rel = "favors")
     public Page<PublicationFavor> findByPublicationId(@Param("publicationId")int publicationId, Pageable pageable);
 
+    @Modifying
+    @Transactional
+    @Query("delete from Favor f where f.publication.id=:publicationid")
+    void deleteFavorByPublicationId(@Param("publicationid")Integer publicationId);
+
 
 }

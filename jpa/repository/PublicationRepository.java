@@ -30,6 +30,10 @@ public interface PublicationRepository extends JpaRepository<Publication,Integer
     @RestResource(path = "all",rel = "all")
     public Page<Publication> findByAll(@Param("topic")String topic, Pageable pageable);
 
+    @Query("select publication from Publication publication order by publication.createTime DESC")
+    public Page<Publication> findByAllNoTopic(Pageable pageable);
+
+
     /**
      * 关注者的饭圈
      * 默认选出关注人的饭圈
@@ -40,13 +44,16 @@ public interface PublicationRepository extends JpaRepository<Publication,Integer
     @RestResource(path = "follow",rel = "follow")
     public Page<Publication> findByFollow(@Param("topic")String topic, @Param("id")int userId, Pageable pageable);
 
+    @Query("select publication from Publication publication ,Follow f where f.user.id=:id and publication.user.id !=:id and publication.user.id=f.followUser.id order by publication.createTime DESC")
+    public Page<Publication> findAllByFollow(@Param("id")int userId,Pageable pageable);
+
     /**
      * 读取一个用户的所有饭圈
      * @param userId
      * @param pageable
      * @return
      */
-    @Query("select  publication from Publication publication where publication.user.id=:id ")
+    @Query("select  publication from Publication publication where publication.user.id=:id order by publication.createTime DESC  ")
     @RestResource(path = "user",rel = "user")
     public Page<Publication> findByUserId(@Param("id")int userId,Pageable pageable);
 
@@ -56,7 +63,7 @@ public interface PublicationRepository extends JpaRepository<Publication,Integer
     public Publication findOneById(@Param("id")int id);
 
 
-    @Query("select distinct publication from Publication publication,Tag t where t.publication.id=publication.id and publication.id=:id order by publication.createTime DESC")
+    @Query("select distinct publication from Publication publication where publication.id=:id order by publication.createTime DESC")
     @RestResource(path = "one",rel = "one")
     public Publication findOneById2(@Param("id")int id);
 
@@ -71,5 +78,11 @@ public interface PublicationRepository extends JpaRepository<Publication,Integer
 
     @Query("select distinct publication from Publication publication,Tag t where :topic IS NULL OR t.topic.name LIKE CONCAT('%',:topic,'%')  and t.publication.id=publication.id order by publication.createTime DESC")
     public List<Publication> findListByAll(@Param("topic")String topic);
+
+    @Query("select distinct publication from Publication publication where publication.user.nickName LIKE CONCAT('%',:nickname,'%') and publication.user.phone LIKE CONCAT('%',:phone,'%') and publication.article.content LIKE CONCAT('%',:content,'%')  order by publication.createTime DESC ")
+    public Page<Publication> findNoTopicByAllAdmin(@Param("nickname")String nickname,@Param("phone")String phone, @Param("content")String content, Pageable pageable);
+
+    @Query("select distinct publication from Publication publication where publication.user.nickName LIKE CONCAT('%',:nickname,'%') and publication.user.phone LIKE CONCAT('%',:phone,'%') and publication.article.content LIKE CONCAT('%',:content,'%')  order by publication.createTime ASC ")
+    public Page<Publication> findNoTopicByAllAdminASC(@Param("nickname")String nickname,@Param("phone")String phone, @Param("content")String content, Pageable pageable);
 
 }

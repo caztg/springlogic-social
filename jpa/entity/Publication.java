@@ -42,15 +42,17 @@ public class Publication {
 
     /*中间表多了一个index字段,所以需要自己创建中间表的实体类Tag*/
     @OneToMany(mappedBy = "publication",cascade = javax.persistence.CascadeType.ALL)
+   // @OneToMany(mappedBy = "publication")
     private List<Tag> tags=new ArrayList<>();
 
 
-     @OneToMany(fetch = FetchType.EAGER,
+     @OneToMany(fetch = FetchType.EAGER,cascade = javax.persistence.CascadeType.ALL,
             targetEntity = PublicationFavor.class,
     mappedBy = "publication")
+     @Fetch(FetchMode.SUBSELECT)
     private List<PublicationFavor> publicationFavors =new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER,
+    @OneToMany(fetch = FetchType.EAGER,cascade = javax.persistence.CascadeType.ALL,
             targetEntity = PublicationComment.class,
             mappedBy = "publication")
     @Fetch(FetchMode.SUBSELECT)
